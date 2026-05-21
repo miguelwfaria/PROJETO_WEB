@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Escolar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <form action="processamento.php" method="post">
+        <h1>Sistema de Análise Escolar</h1>
+
+        <label for="turma">Nome da Turma:</label>
+        <input type="text" name="turma" id="turma" required>
+
+        <label for="quantidade">Quantidade de Alunos:</label>
+        <input type="number" name="quantidade" id="quantidade" min="1" required>
+
+        <button type="button" onclick="adicionarAlunos()">
+            Adicionar Alunos
+        </button>
+
+        <div id="alunos"></div>
+
+        <button type="submit">
+            Enviar
+        </button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
