@@ -1,16 +1,14 @@
 <?php
+$servername = "localhost";
+$database = "bd_mundo";
+$username = "root";
+$password = "";
 
-$servidor = "localhost";
-$usuario = "root";
-$senha = "";
-$banco = "bd_mundo";
-
-$conexao = mysqli_connect($servidor, $usuario, $senha, $banco);
+$conexao = mysqli_connect($servername, $username, $password, $database);
 
 if (!$conexao) {
-    die("Erro na conexão com o banco de dados: " . mysqli_connect_error());
+    die("Falha na Conexão: " . mysqli_connect_error());
 }
 
-mysqli_set_charset($conexao, "utf8mb4");
-
+mysqli_set_charset($conexao, "utf8");
 ?>

@@ -1,131 +1,247 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    color: #222;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.88);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #d4a017;
+}
+
+header h1 {
+    color: #c97d00;
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+header p {
+    font-size: 18px;
 }
 
 .container {
-    width: 90%;
+    background-color: rgba(255, 255, 255, 0.93);
+    padding: 20px;
+    border: 2px solid #d4a017;
+    border-radius: 12px;
     max-width: 1200px;
-    margin: 30px auto;
-    background-color: white;
-    padding: 25px;
-    border-radius: 8px;
+    margin: 0 auto;
 }
 
-h1,
-h2 {
-    margin-top: 0;
+.container h1 {
+    color: #c97d00;
+    margin-bottom: 15px;
+}
+
+.container h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #8a5a00;
+    font-size: 24px;
+}
+
+.voltar {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #8a5a00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.voltar:hover {
+    color: #c97d00;
 }
 
 .menu {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
     margin-top: 20px;
 }
 
-a,
-input[type="submit"] {
-    display: inline-block;
-    padding: 10px 15px;
-    border: 0;
-    border-radius: 5px;
-    background-color: #333;
+.menu a {
+    background-color: #d48b00;
     color: white;
     text-decoration: none;
-    cursor: pointer;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
 }
 
-a:hover,
-input[type="submit"]:hover {
-    background-color: #555;
+.menu a:hover {
+    background-color: #b87400;
 }
 
-.formulario {
+form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
     margin-bottom: 25px;
 }
 
-.campo {
-    display: flex;
-    flex-direction: column;
-}
-
-.campo-completo {
-    grid-column: 1 / -1;
-}
-
 label {
-    margin-bottom: 5px;
     font-weight: bold;
+    align-self: center;
 }
 
 input,
 select {
-    padding: 9px;
-    border: 1px solid #aaa;
-    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: white;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border: 1px solid #d4a017;
+}
+
+button {
+    background-color: #d48b00;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #b87400;
+}
+
+.botao {
+    display: inline-block;
+    background-color: #555;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.botao:hover {
+    background-color: #333;
+}
+
+.cancelar {
+    margin-left: 10px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+    margin-top: 10px;
+    background-color: white;
 }
 
 th {
-    background-color: #e9e9e9;
-}
-
-.acoes {
-    white-space: nowrap;
-}
-
-.acoes a {
-    padding: 6px 9px;
-    margin-right: 4px;
-}
-
-.mensagem {
+    background-color: #d48b00;
+    color: white;
     padding: 10px;
-    margin: 15px 0;
-    background-color: #eeeeee;
-    border-radius: 5px;
+    text-align: left;
 }
 
-.voltar {
-    margin-bottom: 15px;
-    display: inline-block;
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
 }
 
-@media (max-width: 800px) {
+tr:nth-child(even) {
+    background-color: #fffdf7;
+}
 
-    .formulario {
-        grid-template-columns: 1fr;
-    }
+tr:hover {
+    background-color: #fff4d6;
+}
 
-    .campo-completo {
-        grid-column: auto;
+.editar,
+.excluir {
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.editar {
+    color: #8a5a00;
+}
+
+.editar:hover {
+    color: #c97d00;
+}
+
+.excluir {
+    color: #c62828;
+}
+
+.excluir:hover {
+    color: #8e0000;
+}
+
+@media (max-width: 900px) {
+
+    .container {
+        width: 100%;
     }
 
     table {
         display: block;
         overflow-x: auto;
+        white-space: nowrap;
     }
 
+    .menu {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    label {
+        margin-top: 5px;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .container h2 {
+        font-size: 22px;
+    }
+
+    .menu a {
+        font-size: 15px;
+    }
 }

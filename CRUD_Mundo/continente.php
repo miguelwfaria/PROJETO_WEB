@@ -1,76 +1,70 @@
 <?php
-
 include("conexao.php");
 
+// ==============================
+// EXCLUSÃO
+// ==============================
 if (isset($_GET["excluir"])) {
 
     $id = $_GET["excluir"];
 
-    $sql = "delete from continente
-            where id_continente = $id";
+    $sql = "DELETE FROM continente WHERE id_continente = $id";
 
     if (mysqli_query($conexao, $sql)) {
-
-        header("Location: continentes.php");
-        exit;
-
-    } else {
-
-        $mensagem = "Não foi possível excluir o continente. Existem países associados a ele.";
-
+        echo "<script>alert('Continente excluído com sucesso!'); window.location='continente.php';</script>";
+    }
+    else {
+        echo "<script>alert('Não foi possível excluir. Verifique se existem países associados a este continente.'); window.location='continente.php';</script>";
     }
 }
 
-
-if (isset($_POST["cadastrar"])) {
+// ==============================
+// CADASTRO E ALTERAÇÃO
+// ==============================
+if (isset($_POST["salvar"])) {
 
     $nome = $_POST["nome"];
     $populacao = $_POST["populacao"];
     $area = $_POST["area"];
     $total_paises = $_POST["total_paises"];
 
-    $sql = "insert into continente
-            (nome, populacao, area, total_paises)
-            values
-            ('$nome', '$populacao', '$area', '$total_paises')";
+    if ($_POST["salvar"] == "cadastrar") {
+
+        $sql = "INSERT INTO continente(nome, populacao, area, total_paises)
+                VALUES ('$nome', $populacao, $area, $total_paises)";
+    }
+    else {
+
+        $id = $_POST["id_continente"];
+
+        $sql = "UPDATE continente
+                SET nome='$nome',
+                    populacao=$populacao,
+                    area=$area,
+                    total_paises=$total_paises
+                WHERE id_continente=$id";
+    }
 
     if (mysqli_query($conexao, $sql)) {
-
-        header("Location: continentes.php");
-        exit;
-
+        echo "<script>alert('Registro salvo com sucesso!'); window.location='continente.php';</script>";
+    }
+    else {
+        echo "Erro: " . mysqli_error($conexao);
     }
 }
 
-
-if (isset($_POST["editar"])) {
-
-    $id = $_POST["id_continente"];
-
-    $nome = $_POST["nome"];
-    $populacao = $_POST["populacao"];
-    $area = $_POST["area"];
-    $total_paises = $_POST["total_paises"];
-
-    $sql = "update continente set
-            nome = '$nome',
-            populacao = '$populacao',
-            area = '$area',
-            total_paises = '$total_paises'
-            where id_continente = $id";
-
-    if (mysqli_query($conexao, $sql)) {
-
-        header("Location: continentes.php");
-        exit;
-
-    }
-}
-
-
+// ==============================
+// DADOS PARA EDIÇÃO
+// ==============================
 $editar = false;
-$continente_editar = null;
 
+$continente = array(
+    "id_continente"=>"",
+    "nome"=>"",
+    "populacao"=>"",
+    "area"=>"",
+    "total_paises"=>""
+);
 
 if (isset($_GET["editar"])) {
 
@@ -78,297 +72,150 @@ if (isset($_GET["editar"])) {
 
     $id = $_GET["editar"];
 
-    $sql = "select *
-            from continente
-            where id_continente = $id";
+    $resultado_edicao = mysqli_query(
+        $conexao,
+        "SELECT * FROM continente WHERE id_continente=$id"
+    );
 
-    $resultado_editar = mysqli_query($conexao, $sql);
-
-    $continente_editar = mysqli_fetch_array($resultado_editar);
+    $continente = mysqli_fetch_array($resultado_edicao);
 }
 
+// ==============================
+// LISTAGEM
+// ==============================
+$resultado = mysqli_query(
+    $conexao,
+    "SELECT * FROM continente ORDER BY nome"
+);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Continentes</title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <a class="voltar" href="index.php">
-        Voltar
-    </a>
+    <a class="voltar" href="index.php">← Voltar</a>
 
     <h1>Continentes</h1>
 
-
-    <?php
-
-    if (isset($mensagem)) {
-
-        echo "<div class='mensagem'>$mensagem</div>";
-
-    }
-
-    ?>
-
-
-    <h2>
-        <?php
-
-        if ($editar) {
-
-            echo "Editar continente";
-
-        } else {
-
-            echo "Cadastrar continente";
-
-        }
-
-        ?>
-    </h2>
-
-
-    <form method="post" class="formulario">
-
-
-        <?php
-
-        if ($editar) {
-
-        ?>
-
-            <input
-                type="hidden"
-                name="id_continente"
-                value="<?php echo $continente_editar["id_continente"]; ?>"
-            >
-
-        <?php
-
-        }
-
-        ?>
-
-
-        <div class="campo">
-
-            <label>Nome:</label>
-
-            <input
-                type="text"
-                name="nome"
-                required
-                value="<?php
-
-                if ($editar) {
-
-                    echo $continente_editar["nome"];
-
-                }
-
-                ?>"
-            >
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>População:</label>
-
-            <input
-                type="number"
-                name="populacao"
-                required
-                value="<?php
-
-                if ($editar) {
-
-                    echo $continente_editar["populacao"];
-
-                }
-
-                ?>"
-            >
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>Área:</label>
-
-            <input
-                type="number"
-                step="0.01"
-                name="area"
-                required
-                value="<?php
-
-                if ($editar) {
-
-                    echo $continente_editar["area"];
-
-                }
-
-                ?>"
-            >
-
-        </div>
-
-
-        <div class="campo">
-
-            <label>Total de países:</label>
-
-            <input
-                type="number"
-                name="total_paises"
-                required
-                value="<?php
-
-                if ($editar) {
-
-                    echo $continente_editar["total_paises"];
-
-                }
-
-                ?>"
-            >
-
-        </div>
-
-
-        <div class="campo-completo">
-
-            <?php
-
-            if ($editar) {
-
-            ?>
-
-                <input
-                    type="submit"
-                    name="editar"
-                    value="Salvar alterações"
-                >
-
-                <a href="continentes.php">
-                    Cancelar
-                </a>
-
-            <?php
-
-            } else {
-
-            ?>
-
-                <input
-                    type="submit"
-                    name="cadastrar"
-                    value="Cadastrar"
-                >
-
-            <?php
-
-            }
-
-            ?>
-
-        </div>
+    <form method="POST">
+
+        <input
+            type="hidden"
+            name="id_continente"
+            value="<?php echo $continente['id_continente']; ?>"
+        >
+
+        <label>Nome:</label>
+        <input
+            type="text"
+            name="nome"
+            value="<?php echo $continente['nome']; ?>"
+            required
+        >
+
+        <label>População:</label>
+        <input
+            type="number"
+            name="populacao"
+            value="<?php echo $continente['populacao']; ?>"
+            required
+        >
+
+        <label>Área (km²):</label>
+        <input
+            type="number"
+            step="0.01"
+            name="area"
+            value="<?php echo $continente['area']; ?>"
+            required
+        >
+
+        <label>Total de países:</label>
+        <input
+            type="number"
+            name="total_paises"
+            value="<?php echo $continente['total_paises']; ?>"
+            required
+        >
+
+        <button
+            type="submit"
+            name="salvar"
+            value="<?php echo $editar ? 'editar' : 'cadastrar'; ?>"
+        >
+            <?php echo $editar ? 'Alterar' : 'Cadastrar'; ?>
+        </button>
+
+        <?php if ($editar) { ?>
+
+            <a class="botao cancelar" href="continente.php">
+                Cancelar
+            </a>
+
+        <?php } ?>
 
     </form>
 
-
-    <h2>Lista de continentes</h2>
-
+    <h2>Continentes cadastrados</h2>
 
     <table>
 
         <tr>
-
-            <th>ID</th>
             <th>Nome</th>
             <th>População</th>
             <th>Área</th>
             <th>Total de países</th>
             <th>Ações</th>
+        </tr>
+
+        <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
+
+        <tr>
+
+            <td><?php echo $linha["nome"]; ?></td>
+
+            <td><?php echo $linha["populacao"]; ?></td>
+
+            <td><?php echo $linha["area"]; ?></td>
+
+            <td><?php echo $linha["total_paises"]; ?></td>
+
+            <td>
+
+                <a
+                    class="editar"
+                    href="continente.php?editar=<?php echo $linha['id_continente']; ?>"
+                >
+                    Editar
+                </a>
+
+                <a
+                    class="excluir"
+                    href="continente.php?excluir=<?php echo $linha['id_continente']; ?>"
+                    onclick="return confirm('Deseja realmente excluir este continente?')"
+                >
+                    Excluir
+                </a>
+
+            </td>
 
         </tr>
 
-
-        <?php
-
-        $sql = "select *
-                from continente
-                order by nome";
-
-        $resultado = mysqli_query($conexao, $sql);
-
-
-        while ($linha = mysqli_fetch_array($resultado)) {
-
-        ?>
-
-            <tr>
-
-                <td>
-                    <?php echo $linha["id_continente"]; ?>
-                </td>
-
-                <td>
-                    <?php echo $linha["nome"]; ?>
-                </td>
-
-                <td>
-                    <?php echo $linha["populacao"]; ?>
-                </td>
-
-                <td>
-                    <?php echo $linha["area"]; ?>
-                </td>
-
-                <td>
-                    <?php echo $linha["total_paises"]; ?>
-                </td>
-
-                <td class="acoes">
-
-                    <a href="continentes.php?editar=<?php echo $linha["id_continente"]; ?>">
-                        Editar
-                    </a>
-
-                    <a href="continentes.php?excluir=<?php echo $linha["id_continente"]; ?>">
-                        Excluir
-                    </a>
-
-                </td>
-
-            </tr>
-
-        <?php
-
-        }
-
-        ?>
+        <?php } ?>
 
     </table>
 
 </div>
 
 </body>
-
 </html>

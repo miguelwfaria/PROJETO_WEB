@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
     <h1>CRUD Mundo</h1>
 
-    <p>Selecione uma tabela:</p>
+    <p>Cadastro e gerenciamento de informações do mundo</p>
+
+</header>
+
+<div class="container">
+
+    <h2>Menu</h2>
 
     <div class="menu">
 
-        <a href="continentes.php">
+        <a href="continente.php">
             Continentes
         </a>
 
-        <a href="governantes.php">
+        <a href="governante.php">
             Governantes
         </a>
 
-        <a href="paises.php">
+        <a href="pais.php">
             Países
         </a>
 
-        <a href="cidades.php">
+        <a href="cidade.php">
             Cidades
         </a>
 

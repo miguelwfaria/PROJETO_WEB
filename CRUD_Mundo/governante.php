@@ -1,29 +1,29 @@
 <?php
-
 include("conexao.php");
 
-
+// ==============================
+// EXCLUSÃO
+// ==============================
 if (isset($_GET["excluir"])) {
 
     $id = $_GET["excluir"];
 
-    $sql = "delete from governante
-            where id_governante = $id";
+    $sql = "DELETE FROM governante WHERE id_governante=$id";
 
     if (mysqli_query($conexao, $sql)) {
 
-        header("Location: governantes.php");
-        exit;
+        echo "<script>alert('Governante excluído com sucesso!'); window.location='governante.php';</script>";
+    }
+    else {
 
-    } else {
-
-        $mensagem = "Não foi possível excluir o governante. Ele está associado a um país ou cidade.";
-
+        echo "<script>alert('Não foi possível excluir. Este governante pode estar associado a um país ou cidade.'); window.location='governante.php';</script>";
     }
 }
 
-
-if (isset($_POST["cadastrar"])) {
+// ==============================
+// CADASTRO E ALTERAÇÃO
+// ==============================
+if (isset($_POST["salvar"])) {
 
     $nome = $_POST["nome"];
     $partido_politico = $_POST["partido_politico"];
@@ -32,101 +32,67 @@ if (isset($_POST["cadastrar"])) {
     $data_inicio_mandato = $_POST["data_inicio_mandato"];
     $data_fim_mandato = $_POST["data_fim_mandato"];
 
+    if ($_POST["salvar"] == "cadastrar") {
 
-    if ($data_fim_mandato == "") {
+        if ($data_fim_mandato == "") {
+            $fim_mandato = "NULL";
+        }
+        else {
+            $fim_mandato = "'$data_fim_mandato'";
+        }
 
-        $fim_mandato = "null";
-
-    } else {
-
-        $fim_mandato = "'$data_fim_mandato'";
-
+        $sql = "INSERT INTO governante
+                (nome, partido_politico, data_nascimento, idade,
+                 data_inicio_mandato, data_fim_mandato)
+                VALUES
+                ('$nome', '$partido_politico', '$data_nascimento',
+                 $idade, '$data_inicio_mandato', $fim_mandato)";
     }
+    else {
 
+        $id = $_POST["id_governante"];
 
-    $sql = "insert into governante
-            (
-                nome,
-                partido_politico,
-                data_nascimento,
-                idade,
-                data_inicio_mandato,
-                data_fim_mandato
-            )
-            values
-            (
-                '$nome',
-                '$partido_politico',
-                '$data_nascimento',
-                '$idade',
-                '$data_inicio_mandato',
-                $fim_mandato
-            )";
+        if ($data_fim_mandato == "") {
+            $fim_mandato = "NULL";
+        }
+        else {
+            $fim_mandato = "'$data_fim_mandato'";
+        }
 
+        $sql = "UPDATE governante
+                SET nome='$nome',
+                    partido_politico='$partido_politico',
+                    data_nascimento='$data_nascimento',
+                    idade=$idade,
+                    data_inicio_mandato='$data_inicio_mandato',
+                    data_fim_mandato=$fim_mandato
+                WHERE id_governante=$id";
+    }
 
     if (mysqli_query($conexao, $sql)) {
 
-        header("Location: governantes.php");
-        exit;
-
+        echo "<script>alert('Registro salvo com sucesso!'); window.location='governante.php';</script>";
     }
+    else {
 
+        echo "Erro: " . mysqli_error($conexao);
+    }
 }
 
-
-if (isset($_POST["editar"])) {
-
-    $id = $_POST["id_governante"];
-
-    $nome = $_POST["nome"];
-    $partido_politico = $_POST["partido_politico"];
-    $data_nascimento = $_POST["data_nascimento"];
-    $idade = $_POST["idade"];
-    $data_inicio_mandato = $_POST["data_inicio_mandato"];
-    $data_fim_mandato = $_POST["data_fim_mandato"];
-
-
-    if ($data_fim_mandato == "") {
-
-        $fim_mandato = "null";
-
-    } else {
-
-        $fim_mandato = "'$data_fim_mandato'";
-
-    }
-
-
-    $sql = "update governante set
-
-            nome = '$nome',
-
-            partido_politico = '$partido_politico',
-
-            data_nascimento = '$data_nascimento',
-
-            idade = '$idade',
-
-            data_inicio_mandato = '$data_inicio_mandato',
-
-            data_fim_mandato = $fim_mandato
-
-            where id_governante = $id";
-
-
-    if (mysqli_query($conexao, $sql)) {
-
-        header("Location: governantes.php");
-        exit;
-
-    }
-
-}
-
-
+// ==============================
+// DADOS PARA EDIÇÃO
+// ==============================
 $editar = false;
-$governante_editar = null;
 
+$governante = array(
+    "id_governante"=>"",
+    "nome"=>"",
+    "partido_politico"=>"",
+    "data_nascimento"=>"",
+    "idade"=>"",
+    "data_inicio_mandato"=>"",
+    "data_fim_mandato"=>""
+);
 
 if (isset($_GET["editar"])) {
 
@@ -134,363 +100,181 @@ if (isset($_GET["editar"])) {
 
     $id = $_GET["editar"];
 
-    $sql = "select *
-            from governante
-            where id_governante = $id";
+    $resultado_edicao = mysqli_query(
+        $conexao,
+        "SELECT * FROM governante WHERE id_governante=$id"
+    );
 
-    $resultado_editar = mysqli_query($conexao, $sql);
-
-    $governante_editar = mysqli_fetch_array($resultado_editar);
-
+    $governante = mysqli_fetch_array($resultado_edicao);
 }
 
+// ==============================
+// LISTAGEM
+// ==============================
+$resultado = mysqli_query(
+    $conexao,
+    "SELECT * FROM governante ORDER BY nome"
+);
 ?>
 
-
 <!DOCTYPE html>
-
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Governantes</title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
+    <a class="voltar" href="index.php">← Voltar</a>
 
-<a class="voltar" href="index.php">
-    Voltar
-</a>
+    <h1>Governantes</h1>
 
-
-<h1>Governantes</h1>
-
-
-<?php
-
-if (isset($mensagem)) {
-
-    echo "<div class='mensagem'>$mensagem</div>";
-
-}
-
-?>
-
-
-<h2>
-
-<?php
-
-if ($editar) {
-
-    echo "Editar governante";
-
-} else {
-
-    echo "Cadastrar governante";
-
-}
-
-?>
-
-</h2>
-
-
-<form method="post" class="formulario">
-
-
-<?php
-
-if ($editar) {
-
-?>
-
-<input
-    type="hidden"
-    name="id_governante"
-    value="<?php echo $governante_editar["id_governante"]; ?>"
->
-
-<?php
-
-}
-
-?>
-
-
-<div class="campo">
-
-<label>Nome:</label>
-
-<input
-    type="text"
-    name="nome"
-    required
-    value="<?php
-
-    if ($editar) {
-
-        echo $governante_editar["nome"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Partido político:</label>
-
-<input
-    type="text"
-    name="partido_politico"
-    required
-    value="<?php
-
-    if ($editar) {
-
-        echo $governante_editar["partido_politico"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Data de nascimento:</label>
-
-<input
-    type="date"
-    name="data_nascimento"
-    required
-    value="<?php
-
-    if ($editar) {
-
-        echo $governante_editar["data_nascimento"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Idade:</label>
-
-<input
-    type="number"
-    name="idade"
-    required
-    value="<?php
-
-    if ($editar) {
-
-        echo $governante_editar["idade"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Início do mandato:</label>
-
-<input
-    type="date"
-    name="data_inicio_mandato"
-    required
-    value="<?php
-
-    if ($editar) {
-
-        echo $governante_editar["data_inicio_mandato"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo">
-
-<label>Fim do mandato:</label>
-
-<input
-    type="date"
-    name="data_fim_mandato"
-    value="<?php
-
-    if (
-        $editar &&
-        $governante_editar["data_fim_mandato"] != null
-    ) {
-
-        echo $governante_editar["data_fim_mandato"];
-
-    }
-
-    ?>"
->
-
-</div>
-
-
-<div class="campo-completo">
-
-<?php
-
-if ($editar) {
-
-?>
-
-<input
-    type="submit"
-    name="editar"
-    value="Salvar alterações"
->
-
-<a href="governantes.php">
-    Cancelar
-</a>
-
-<?php
-
-} else {
-
-?>
-
-<input
-    type="submit"
-    name="cadastrar"
-    value="Cadastrar"
->
-
-<?php
-
-}
-
-?>
-
-</div>
-
-
-</form>
-
-
-<h2>Lista de governantes</h2>
-
-
-<table>
-
-<tr>
-
-<th>ID</th>
-<th>Nome</th>
-<th>Partido</th>
-<th>Nascimento</th>
-<th>Idade</th>
-<th>Início do mandato</th>
-<th>Fim do mandato</th>
-<th>Ações</th>
-
-</tr>
-
-
-<?php
-
-$sql = "select *
-        from governante
-        order by nome";
-
-$resultado = mysqli_query($conexao, $sql);
-
-
-while ($linha = mysqli_fetch_array($resultado)) {
-
-?>
-
-<tr>
-
-<td>
-<?php echo $linha["id_governante"]; ?>
-</td>
-
-<td>
-<?php echo $linha["nome"]; ?>
-</td>
-
-<td>
-<?php echo $linha["partido_politico"]; ?>
-</td>
-
-<td>
-<?php echo $linha["data_nascimento"]; ?>
-</td>
-
-<td>
-<?php echo $linha["idade"]; ?>
-</td>
-
-<td>
-<?php echo $linha["data_inicio_mandato"]; ?>
-</td>
-
-<td>
-<?php echo $linha["data_fim_mandato"]; ?>
-</td>
-
-<td class="acoes">
-
-<a href="governantes.php?editar=<?php echo $linha["id_governante"]; ?>">
-Editar
-</a>
-
-<a href="governantes.php?excluir=<?php echo $linha["id_governante"]; ?>">
-Excluir
-</a>
-
-</td>
-
-</tr>
-
-<?php
-
-}
-
-?>
-
-</table>
-
+    <form method="POST">
+
+        <input
+            type="hidden"
+            name="id_governante"
+            value="<?php echo $governante['id_governante']; ?>"
+        >
+
+        <label>Nome:</label>
+
+        <input
+            type="text"
+            name="nome"
+            value="<?php echo $governante['nome']; ?>"
+            required
+        >
+
+        <label>Partido político:</label>
+
+        <input
+            type="text"
+            name="partido_politico"
+            value="<?php echo $governante['partido_politico']; ?>"
+            required
+        >
+
+        <label>Data de nascimento:</label>
+
+        <input
+            type="date"
+            name="data_nascimento"
+            value="<?php echo $governante['data_nascimento']; ?>"
+            required
+        >
+
+        <label>Idade:</label>
+
+        <input
+            type="number"
+            name="idade"
+            value="<?php echo $governante['idade']; ?>"
+            required
+        >
+
+        <label>Data de início do mandato:</label>
+
+        <input
+            type="date"
+            name="data_inicio_mandato"
+            value="<?php echo $governante['data_inicio_mandato']; ?>"
+            required
+        >
+
+        <label>Data de fim do mandato:</label>
+
+        <input
+            type="date"
+            name="data_fim_mandato"
+            value="<?php echo $governante['data_fim_mandato']; ?>"
+        >
+
+        <button
+            type="submit"
+            name="salvar"
+            value="<?php echo $editar ? 'editar' : 'cadastrar'; ?>"
+        >
+            <?php echo $editar ? 'Alterar' : 'Cadastrar'; ?>
+        </button>
+
+        <?php if ($editar) { ?>
+
+            <a class="botao cancelar" href="governante.php">
+                Cancelar
+            </a>
+
+        <?php } ?>
+
+    </form>
+
+    <h2>Governantes cadastrados</h2>
+
+    <table>
+
+        <tr>
+            <th>Nome</th>
+            <th>Partido</th>
+            <th>Nascimento</th>
+            <th>Idade</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <th>Ações</th>
+        </tr>
+
+        <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
+
+        <tr>
+
+            <td><?php echo $linha["nome"]; ?></td>
+            <td><?php echo $linha["partido_politico"]; ?></td>
+            <td><?php echo $linha["data_nascimento"]; ?></td>
+            <td><?php echo $linha["idade"]; ?></td>
+            <td><?php echo $linha["data_inicio_mandato"]; ?></td>
+
+            <td>
+                <?php
+                if ($linha["data_fim_mandato"] == NULL) {
+                    echo "-";
+                }
+                else {
+                    echo $linha["data_fim_mandato"];
+                }
+                ?>
+            </td>
+
+            <td>
+
+                <a
+                    class="editar"
+                    href="governante.php?editar=<?php echo $linha['id_governante']; ?>"
+                >
+                    Editar
+                </a>
+
+                <a
+                    class="excluir"
+                    href="governante.php?excluir=<?php echo $linha['id_governante']; ?>"
+                    onclick="return confirm('Deseja realmente excluir este governante?')"
+                >
+                    Excluir
+                </a>
+
+            </td>
+
+        </tr>
+
+        <?php } ?>
+
+    </table>
 
 </div>
 
 </body>
-
 </html>
