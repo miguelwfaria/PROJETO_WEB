@@ -164,6 +164,13 @@ button:hover {
     border-radius: 6px;
 }
 
+.mensagem-sucesso {
+    padding: 12px;
+    color: #205b2b;
+    background: #e0f5e4;
+    border-radius: 6px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

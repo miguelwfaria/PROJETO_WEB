@@ -44,6 +44,9 @@ proteger_pagina();
         <a href="cidade.php">
             Cidades
         </a>
+        <a href="trocar_senha.php">
+            Alterar senha
+        </a>
 
     </div>
 
