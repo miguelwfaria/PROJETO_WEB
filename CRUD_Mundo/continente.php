@@ -1,5 +1,6 @@
 <?php
-include("conexao.php");
+require_once __DIR__ . '/autenticacao.php';
+proteger_pagina();
 
 // ==============================
 // EXCLUSÃO
@@ -96,7 +97,7 @@ $resultado = mysqli_query(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Continentes</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>

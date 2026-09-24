@@ -1,5 +1,6 @@
 <?php
-include("conexao.php");
+require_once __DIR__ . '/autenticacao.php';
+proteger_pagina();
 
 // ==============================
 // EXCLUSÃO
@@ -141,7 +142,7 @@ $resultado = mysqli_query(
 
     <title>Cidades</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 

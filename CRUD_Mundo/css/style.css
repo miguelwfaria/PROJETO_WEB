@@ -1,0 +1,271 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.88);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #d4a017;
+}
+
+header h1 {
+    color: #c97d00;
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+header p {
+    font-size: 18px;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.93);
+    padding: 20px;
+    border: 2px solid #d4a017;
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container h1 {
+    color: #c97d00;
+    margin-bottom: 15px;
+}
+
+.container h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #8a5a00;
+    font-size: 24px;
+}
+
+.voltar {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #8a5a00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.voltar:hover {
+    color: #c97d00;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.menu a {
+    background-color: #d48b00;
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    background-color: #b87400;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+label {
+    font-weight: bold;
+    align-self: center;
+}
+
+input,
+select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: white;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border: 1px solid #d4a017;
+}
+
+button {
+    background-color: #d48b00;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #b87400;
+}
+
+.botao {
+    display: inline-block;
+    background-color: #555;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.botao:hover {
+    background-color: #333;
+}
+
+.cancelar {
+    margin-left: 10px;
+}
+
+.autenticar {
+    max-width: 580px;
+}
+
+.autenticar h1,
+.autenticar p {
+    margin-bottom: 15px;
+}
+
+.acoes {
+    grid-column: 2;
+}
+
+.mensagem-erro {
+    padding: 12px;
+    color: #8e0000;
+    background: #ffe5e5;
+    border-radius: 6px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: white;
+}
+
+th {
+    background-color: #d48b00;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #fffdf7;
+}
+
+tr:hover {
+    background-color: #fff4d6;
+}
+
+.editar,
+.excluir {
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.editar {
+    color: #8a5a00;
+}
+
+.editar:hover {
+    color: #c97d00;
+}
+
+.excluir {
+    color: #c62828;
+}
+
+.excluir:hover {
+    color: #8e0000;
+}
+
+@media (max-width: 900px) {
+
+    .container {
+        width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .menu {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .acoes {
+        grid-column: 1;
+    }
+
+    label {
+        margin-top: 5px;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .container h2 {
+        font-size: 22px;
+    }
+
+    .menu a {
+        font-size: 15px;
+    }
+}

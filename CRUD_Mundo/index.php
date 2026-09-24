@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/autenticacao.php';
+proteger_pagina();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Mundo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -15,6 +19,7 @@
     <h1>CRUD Mundo</h1>
 
     <p>Cadastro e gerenciamento de informações do mundo</p>
+    <a class="voltar" href="sair.php">Sair</a>
 
 </header>
 
